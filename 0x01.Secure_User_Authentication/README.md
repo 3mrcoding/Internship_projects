@@ -14,13 +14,14 @@ Protected routes should restrict unauthorized access to sensitive functionalitie
 
 User Management
 
+    GET /api/users/me - Get User Profile data
     GET /api/users - Get a list of users (admin only)
     GET /api/users/:id - Get a specific user by ID (admin only)
     DELETE /api/users/:id - Delete a user (admin only)
 
 User Authentication
 
-    POST /api/auth/register - Register a new user
+    POST /api/auth/signup - Register a new user
     POST /api/auth/login - Login an existing user
 
 ## Contributing
