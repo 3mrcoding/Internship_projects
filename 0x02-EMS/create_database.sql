@@ -17,47 +17,77 @@ CREATE TABLE IF NOT EXISTS employees (
     salary INT NOT NULL,
     rating FLOAT DEFAULT 0.0,
     gender VARCHAR(50) NOT NULL,
-    manager_id INT
+    manager_id INT,
+);
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT PRIMARY KEY,
+    email VARCHAR(250),
+    password VARCHAR(250),
+    passwordConfirm VARCHAR(250),
+    role VARCHAR(250)
 );
 
-CREATE TABLE IF NOT EXISTS ratings (
-    employ_id INT PRIMARY KEY,
-    attendance_rate FLOAT,
-    task_timing FLOAT,
-    task_quality FLOAT
-);
+-- DELIMITER //
+-- CREATE TRIGGER password_check
+-- BEFORE INSERT ON users
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.password != NEW.passwordConfirm THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Passwords do not match';
+--     END IF;
+-- END;//
+-- DELIMITER ;
 
-CREATE TABLE IF NOT EXISTS attendance (
-    employ_id INT PRIMARY KEY,
-    arrive_time TIMESTAMP,
-    leave_time TIMESTAMP,
-    working_hours FLOAT,
-    permission INT DEFAULT 2
-);
+-- DELIMITER //
+-- CREATE TRIGGER password_check_update
+-- BEFORE UPDATE ON users
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.password != NEW.passwordConfirm THEN
+--         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Passwords do not match';
+--     END IF;
+-- END;//
+-- DELIMITER ;
 
--- Drop existing triggers
-DROP TRIGGER IF EXISTS before_attendance_insert;
-DROP TRIGGER IF EXISTS before_attendance_update;
+-- CREATE TABLE IF NOT EXISTS ratings (
+--     employ_id INT PRIMARY KEY,
+--     attendance_rate FLOAT,
+--     task_timing FLOAT,
+--     task_quality FLOAT
+-- );
 
--- Trigger before insert
-DELIMITER //
-CREATE TRIGGER before_attendance_insert
-BEFORE INSERT ON attendance
-FOR EACH ROW
-BEGIN
-    SET NEW.working_hours = TIMESTAMPDIFF(HOUR, NEW.arrive_time, NEW.leave_time);
-END;
-//
 
--- Trigger before update
-CREATE TRIGGER before_attendance_update
-BEFORE UPDATE ON attendance
-FOR EACH ROW
-BEGIN
-    SET NEW.working_hours = TIMESTAMPDIFF(HOUR, NEW.arrive_time, NEW.leave_time);
-END;
-//
-DELIMITER ;
+-- CREATE TABLE IF NOT EXISTS attendance (
+--     employ_id INT PRIMARY KEY,
+--     arrive_time TIMESTAMP,
+--     leave_time TIMESTAMP,
+--     working_hours FLOAT,
+--     permission INT DEFAULT 2
+-- );
+
+-- -- Drop existing triggers
+-- DROP TRIGGER IF EXISTS before_attendance_insert;
+-- DROP TRIGGER IF EXISTS before_attendance_update;
+
+-- -- Trigger before insert
+-- DELIMITER //
+-- CREATE TRIGGER before_attendance_insert
+-- BEFORE INSERT ON attendance
+-- FOR EACH ROW
+-- BEGIN
+--     SET NEW.working_hours = TIMESTAMPDIFF(HOUR, NEW.arrive_time, NEW.leave_time);
+-- END;
+-- //
+
+-- -- Trigger before update
+-- CREATE TRIGGER before_attendance_update
+-- BEFORE UPDATE ON attendance
+-- FOR EACH ROW
+-- BEGIN
+--     SET NEW.working_hours = TIMESTAMPDIFF(HOUR, NEW.arrive_time, NEW.leave_time);
+-- END;
+-- //
+-- DELIMITER ;
 
 -- Insert sample values into employees table
 INSERT INTO employees (firstname, lastname, email, phone_no, job_title, department, salary, gender, manager_id) VALUES
@@ -81,6 +111,15 @@ INSERT INTO employees (firstname, lastname, email, phone_no, job_title, departme
 ('Mark', 'Lee', 'mark.lee@example.com', 9901234567, 'Customer Support', 'Support', 45000, 'Male', 3),
 ('Susan', 'Walker', 'susan.walker@example.com', 1012345678, 'Administrative Assistant', 'Admin', 43000, 'Female', 3),
 ('Steven', 'Hall', 'steven.hall@example.com', 2123456789, 'Software Architect', 'IT', 90000, 'Male', 3);
+
+-- -- Insert sample values into ratings table
+-- INSERT INTO users (user_id, email, password, passwordConfirm)
+-- VALUES
+--     (1, 'john.doe@example.com', 'password123', 'password123'),
+--     (2, 'jane.doe@example.com', 'password456', 'password456'),
+--     (3, 'bob.smith@example.com', 'password789', 'password789'),
+--     (4, 'alice.johnson@example.com', 'password012', 'password012'),
+--     (5, 'mike.williams@example.com', 'password345', 'password345');
 
 -- -- Insert sample values into ratings table
 -- INSERT INTO ratings (employ_id, attendance_rate, task_timing, task_quality) VALUES

@@ -10,8 +10,10 @@ app.use("/api/v1/employees", employeRouter);
 
 // Error Handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+  res.status(500).json({
+    status: "Error",
+    message: err.message,
+  });
 });
 
 module.exports = app;
