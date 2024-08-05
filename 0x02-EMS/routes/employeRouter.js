@@ -11,6 +11,11 @@ router
     authController.checkLogin,
     authController.restrictedTo("admin"),
     employeesController.getAllEmployees
+  )
+  .post(
+    authController.checkLogin,
+    authController.restrictedTo("admin"),
+    employeesController.addEmployee
   );
 router
   .route("/id/:id")

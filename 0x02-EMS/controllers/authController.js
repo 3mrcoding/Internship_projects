@@ -45,7 +45,6 @@ exports.login = async (req, res, next) => {
     !((await PassHash(password)) !== user[0][0].password)
   )
     return next(new Error("Wronge email or password"));
-  console.log(user[0][0]);
   const token = signToken(user[0][0].user_id);
   res.status(201).json({
     status: "Success",

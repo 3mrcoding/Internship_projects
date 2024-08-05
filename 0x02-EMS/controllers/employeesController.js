@@ -99,3 +99,47 @@ exports.deleteEmployee = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.addEmployee = async (req, res, next) => {
+  const {
+    firstname,
+    lastname,
+    email,
+    phone_no,
+    job_title,
+    department,
+    salary,
+    gender,
+    manager_id,
+  } = req.body;
+
+  const newEmployee = await DB.query(
+    `INSERT INTO employees (
+    firstname,
+    lastname,
+    email,
+    phone_no,
+    job_title,
+    department,
+    salary,
+    gender,
+    manager_id)
+    VALUES (?,?,?,?,?,?,?,?,?)`,
+    [
+      firstname,
+      lastname,
+      email,
+      phone_no,
+      job_title,
+      department,
+      salary,
+      gender,
+      manager_id,
+    ]
+  );
+
+  res.status(201).json({
+    status: "Success",
+    message: "Employee Added",
+  });
+};
